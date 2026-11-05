@@ -4,67 +4,80 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Backup Drive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f1418;--panel:#171e24;--panel-2:#1e272e;--line:#2d3942;
-  --text:#edf2f4;--muted:#9aa9b2;--accent:#f2b84b;--accent-ink:#231800;
-  --ok:#62d2a2;--bad:#ff8a7a;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --folha:#17714a;--folha-escura:#0f3d2b;--broto:#d9f5c5;--ceu:#d8efff;--rosa:#ec4c86;--rosa-clara:#ffe0ea;
+  --sol:#ffc21f;--sol-clara:#fff0b8;--lilas:#e8dfff;--texto:#123a2a;--suave:#3f6353;--branco:#fff;
+  --erro:#a30f45;--titulo:"Caprasimo",Georgia,serif;--corpo:"Figtree","Segoe UI",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--text);font:15px/1.4 "Segoe UI",system-ui,sans-serif;overflow:hidden}
+body{background:#c9f0dc;color:var(--texto);font:15px/1.4 var(--corpo);overflow:hidden}
 [hidden]{display:none!important}
-.app{height:100dvh;max-width:1040px;margin:0 auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.jardim{position:fixed;bottom:0;width:190px;height:min(92vh,620px);pointer-events:none;z-index:0}
+.jardim.esq{left:0}.jardim.dir{right:0}
+.app{position:relative;z-index:1;height:100dvh;max-width:1000px;margin:0 auto;padding:12px 18px;display:flex;flex-direction:column;gap:10px;min-height:0}
 header{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand svg{width:34px;height:34px;flex:none}
-h1{font-size:20px;line-height:1.1;margin:0;letter-spacing:0}
-.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.chip{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--muted);font-size:13px}
-.alert{border-radius:8px;padding:8px 12px;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.alert.err{background:#3b1d1b;color:#ffd1ca;border:1px solid #6d322d}
-.alert.warn{background:#3a2b10;color:#ffe2a8;border:1px solid #6d5120}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{width:46px;height:46px;flex:none}
+h1{font:400 30px/1 var(--titulo);margin:0;letter-spacing:0;color:var(--folha-escura)}
+.brand p{margin:2px 0 0;color:var(--suave);font-size:14px;font-weight:500}
+.chip{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:var(--branco);border-radius:999px;padding:6px 14px;color:var(--folha-escura);font-size:14px;font-weight:600}
+.alert{border-radius:12px;padding:8px 12px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.alert.err{background:var(--rosa-clara);color:var(--erro);border:2px solid var(--rosa)}
+.alert.warn{background:var(--sol-clara);color:#5c4100;border:2px solid var(--sol)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.step h2{font-size:14px;margin:0;display:flex;align-items:center;gap:8px}
-.num{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--panel-2);color:var(--muted);font-size:12px;font-weight:700;flex:none}
-.step.done .num{background:var(--ok);color:#06281b}
-.hint{min-height:20px;color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-button{font:600 14px "Segoe UI",system-ui,sans-serif;min-height:38px;border-radius:7px;padding:7px 12px;border:1px solid var(--line);background:var(--panel-2);color:var(--text);cursor:pointer}
-button:hover:not(:disabled){border-color:var(--accent)}
-button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-button:disabled{opacity:.45;cursor:not-allowed}
-button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-button.stop{border-color:#7a3a33;color:#ffc1b8}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:9px}
+.step{border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+#step1{background:var(--broto)}#step2{background:var(--rosa-clara)}#step3{background:var(--sol-clara)}
+.step h2{font:400 18px/1.2 var(--titulo);margin:0;display:flex;align-items:center;gap:8px;color:var(--folha-escura)}
+.num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--branco);color:var(--folha-escura);font:700 14px var(--corpo);flex:none}
+.step.done .num{background:var(--folha);color:var(--branco)}
+.hint{min-height:20px;color:var(--suave);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button{font:700 15px var(--corpo);min-height:38px;border-radius:999px;padding:7px 16px;border:2px solid var(--folha);background:var(--branco);color:var(--folha);cursor:pointer}
+button:hover:not(:disabled){background:var(--folha);color:var(--branco)}
+button:focus-visible{outline:3px solid var(--rosa);outline-offset:2px}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.primary{background:var(--folha);border-color:var(--folha);color:var(--branco)}
+button.primary:hover:not(:disabled){background:var(--folha-escura);border-color:var(--folha-escura)}
+button.stop{border-color:var(--erro);color:var(--erro)}
+button.stop:hover:not(:disabled){background:var(--erro);color:var(--branco)}
+.panel{background:var(--branco);border-radius:16px;padding:11px 14px;display:flex;flex-direction:column;gap:8px}
 .status{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
-#statusText{font-size:16px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#percent{font:600 20px var(--mono);color:var(--accent)}
-.bar{height:11px;background:var(--bg);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
-#barFill{height:100%;width:0;background:var(--accent);transition:width .2s}
-#detail{font:13px var(--mono);color:var(--muted);min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#statusText{font-size:17px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#percent{font:400 24px/1 var(--titulo);color:var(--folha)}
+.bar{height:16px;margin:4px 14px 4px 0;background:#eef8e7;border-radius:8px}
+#barFill{position:relative;height:100%;width:0;min-width:8px;border-radius:8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='16'%3E%3Cpath d='M6 8c5-7 11-7 15 0-5 4-11 4-15 0z' fill='%23b9ec7f'/%3E%3C/svg%3E") repeat-x left center,var(--folha);transition:width .2s}
+#barFill::after{content:"";position:absolute;right:-15px;top:-7px;width:30px;height:30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-16 -16 32 32'%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(0)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(60)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(120)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(240)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(300)'/%3E%3Ccircle r='4.6' fill='%23ffc21f'/%3E%3C/svg%3E") center/contain no-repeat}
+#detail{font-size:13px;color:var(--suave);min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.stat{background:var(--panel-2);border-radius:7px;padding:7px 10px}
-.stat b{display:block;font:600 20px/1.2 var(--mono)}
-.stat span{font-size:12px;color:var(--muted)}
-#current{font-size:13px;color:var(--muted);min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.log{flex:1;min-height:72px;background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;overflow:hidden}
-.log h2{font-size:13px;margin:0;padding:8px 12px;border-bottom:1px solid var(--line);color:var(--muted)}
+.stat{border-radius:12px;padding:5px 12px}
+.stat:nth-child(1){background:var(--ceu)}.stat:nth-child(2){background:var(--broto)}.stat:nth-child(3){background:var(--sol-clara)}.stat:nth-child(4){background:var(--lilas)}
+.stat b{display:block;font:400 22px/1.2 var(--titulo);color:var(--folha-escura)}
+.stat span{font-size:13px;color:var(--suave)}
+#current{font-size:13px;color:var(--suave);min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log{flex:1;min-height:72px;background:var(--branco);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.log h2{font:400 16px/1.2 var(--titulo);margin:0;padding:8px 14px 2px;color:var(--folha-escura)}
 #fails{list-style:none;margin:0;padding:0;overflow:auto;flex:1}
-#fails li{padding:6px 12px;border-bottom:1px solid var(--line);font-size:13px;display:flex;gap:12px;justify-content:space-between}
-#fails .path{font-family:var(--mono);overflow-wrap:anywhere}
-#fails .why{color:var(--bad);text-align:right;flex:0 0 42%}
-#empty{padding:10px 12px;color:var(--muted);font-size:13px}
-footer{font-size:12px;color:var(--muted)}
+#fails li{padding:5px 14px;border-top:1px solid var(--broto);font-size:14px;display:flex;gap:12px;justify-content:space-between}
+#fails .path{font-weight:600;overflow-wrap:anywhere}
+#fails .why{color:var(--erro);text-align:right;flex:0 0 46%}
+#empty{padding:4px 14px 10px;color:var(--suave);font-size:14px}
+footer{font-size:13px;color:var(--suave);text-align:center}
+@media (max-width:1240px){.jardim{display:none}}
 @media (max-width:720px){body{overflow:auto}.app{height:auto;min-height:100dvh}.steps{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.chip{max-width:55%}}
 @media (prefers-reduced-motion:reduce){#barFill{transition:none}}
 </style>
 </head>
 <body>
+<svg class="jardim esq" viewBox="0 0 190 620" preserveAspectRatio="xMinYMax meet" aria-hidden="true"><path d="M46 620C40 500 70 420 56 310" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path d="M118 620c6-70-14-110 2-190" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path d="M72 620c-8-50 2-80-10-130" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path transform="translate(50 530) rotate(-35)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><path transform="translate(112 560) rotate(-150)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><path transform="translate(58 420) rotate(-145)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><g transform="translate(56 270)" fill="#ec4c86"><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(0)"/><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(60)"/><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(120)"/><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(180)"/><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(240)"/><ellipse cx="0" cy="-29.8" rx="17.3" ry="24.0" transform="rotate(300)"/><circle r="14.4" fill="#ffc21f"/></g><g transform="translate(122 395)" fill="#7a5be0"><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(0)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(60)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(120)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(180)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(240)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(300)"/><circle r="11.4" fill="#ffc21f"/></g><g transform="translate(60 470)" fill="#ff8a3d"><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(0)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(60)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(120)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(180)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(240)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(300)"/><circle r="9.0" fill="#ffc21f"/></g></svg>
+<svg class="jardim dir" viewBox="0 0 190 620" preserveAspectRatio="xMaxYMax meet" aria-hidden="true"><path d="M144 620C150 500 120 440 136 340" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path d="M70 620c-6-60 14-110-4-180" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path d="M112 620c8-40-2-70 8-110" fill="none" stroke="#17714a" stroke-width="5" stroke-linecap="round"/><path transform="translate(140 540) rotate(-140)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><path transform="translate(76 570) rotate(-30)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><path transform="translate(134 440) rotate(-30)" d="M0 0c12-16 34-16 46 0-12 12-34 12-46 0z" fill="#3ea86b"/><g transform="translate(134 296)" fill="#2f9be0"><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(0)"/><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(60)"/><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(120)"/><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(180)"/><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(240)"/><ellipse cx="0" cy="-28.5" rx="16.6" ry="23.0" transform="rotate(300)"/><circle r="13.8" fill="#ffc21f"/></g><g transform="translate(64 398)" fill="#ec4c86"><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(0)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(60)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(120)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(180)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(240)"/><ellipse cx="0" cy="-23.6" rx="13.7" ry="19.0" transform="rotate(300)"/><circle r="11.4" fill="#ffc21f"/></g><g transform="translate(122 478)" fill="#ffc21f"><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(0)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(60)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(120)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(180)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(240)"/><ellipse cx="0" cy="-18.6" rx="10.8" ry="15.0" transform="rotate(300)"/><circle r="9.0" fill="#ec4c86"/></g></svg>
 <main class="app">
   <header>
     <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="22" width="32" height="13" rx="3" fill="#2d3942"/><circle cx="29" cy="28.5" r="2.2" fill="#f2b84b"/><path d="M20 4v13m-6-6 6 6 6-6" fill="none" stroke="#f2b84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 46 46" aria-hidden="true"><rect x="5" y="31" width="36" height="13" rx="5" fill="#17714a"/><circle cx="33" cy="37.5" r="2.4" fill="#ffc21f"/><path d="M23 31V17" stroke="#17714a" stroke-width="3" stroke-linecap="round"/><path d="M23 25c4-5 9-5 12-2-4 4-8 4-12 2z" fill="#3ea86b"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(0 23 12)"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(60 23 12)"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(120 23 12)"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(180 23 12)"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(240 23 12)"/><ellipse cx="23" cy="5.5" rx="4" ry="5.2" fill="#ec4c86" transform="rotate(300 23 12)"/><circle cx="23" cy="12" r="3.6" fill="#ffc21f"/></svg>
       <div><h1>Backup Drive</h1><p>Do Google Drive para o HD externo</p></div>
     </div>
     <div class="chip" id="account">Nenhuma conta conectada</div>
@@ -536,7 +549,7 @@ async function reportFails(){
   try { await writeText(FAIL_FILE, text); } catch {}
 }
 function finish(text, complete){
-  setStatus(text); S.active.clear(); render();
+  setStatus(text); S.active.clear(); render(); S.queue = 0;
   if (complete) { $('barFill').style.width = '100%'; $('percent').textContent = '100%'; }
   if (complete && S.fails.length) $('detail').textContent = 'A lista completa também foi salva em falhas-do-backup.txt, na pasta do backup.';
 }
