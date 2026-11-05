@@ -11,7 +11,6 @@
 :root{
   --folha:#17714a;--folha-escura:#0f3d2b;--broto:#d9f5c5;--ceu:#d8efff;--rosa:#ec4c86;--rosa-clara:#ffe0ea;
   --sol:#ffc21f;--sol-clara:#fff0b8;--lilas:#e8dfff;--texto:#123a2a;--suave:#3f6353;--branco:#fff;
-  --ale-pele:#f2c7a5;--ale-cabelo:#5b3a24;
   --erro:#a30f45;--titulo:"Caprasimo",Georgia,serif;--corpo:"Figtree","Segoe UI",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
@@ -49,7 +48,7 @@ button.stop:hover:not(:disabled){background:var(--erro);color:var(--branco)}
 .status{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
 #statusText{font-size:17px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #percent{font:400 24px/1 var(--titulo);color:var(--folha)}
-.bar{position:relative;height:16px;margin:50px 14px 4px 0;background:#eef8e7;border-radius:8px}
+.bar{position:relative;height:16px;margin:58px 14px 4px 0;background:#eef8e7;border-radius:8px}
 #barFill{position:relative;height:100%;width:0;min-width:8px;border-radius:8px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='16'%3E%3Cpath d='M6 8c5-7 11-7 15 0-5 4-11 4-15 0z' fill='%23b9ec7f'/%3E%3C/svg%3E") repeat-x left center,var(--folha);transition:width .2s}
 #barFill::after{content:"";position:absolute;right:-15px;top:-7px;width:30px;height:30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-16 -16 32 32'%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(0)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(60)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(120)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(240)'/%3E%3Cellipse cx='0' cy='-9' rx='5.2' ry='7' fill='%23ec4c86' transform='rotate(300)'/%3E%3Ccircle r='4.6' fill='%23ffc21f'/%3E%3C/svg%3E") center/contain no-repeat}
 #detail{font-size:13px;color:var(--suave);min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -69,27 +68,8 @@ button.stop:hover:not(:disabled){background:var(--erro);color:var(--branco)}
 footer{font-size:13px;color:var(--suave);text-align:center}
 @media (max-width:1240px){.jardim{display:none}}
 @media (max-width:720px){.opcoes{grid-template-columns:1fr}body{overflow:auto}.app{height:auto;min-height:100dvh}.steps{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.chip{max-width:55%}}
-#turma{position:absolute;left:0;bottom:calc(100% - 4px);width:178px;height:60px;display:flex;align-items:flex-end;gap:6px;transition:left .2s}
-.bicho{display:block;flex:none;height:auto}
-.macarrao{width:38px}.caramelo{width:66px}.ale{width:66px}
-.pata,.perna-chuta,.rabo{transform-box:fill-box}
-.pata{transform-origin:50% 0}.perna-chuta{transform-origin:100% 0}.rabo{transform-origin:100% 100%}
-.trabalhando .macarrao{animation:pulinho .6s ease-in-out infinite}
-.trabalhando .caramelo{animation:trote .4s ease-in-out infinite alternate}
-.trabalhando .pata.a{animation:passo .4s ease-in-out infinite alternate}
-.trabalhando .pata.b{animation:passo .4s ease-in-out infinite alternate-reverse}
-.trabalhando .rabo{animation:abanar .25s ease-in-out infinite alternate}
-.trabalhando .menina{animation:trote .7s ease-in-out infinite alternate}
-.trabalhando .perna-chuta{animation:chute .7s ease-in-out infinite alternate}
-.festa #turma .bicho{animation:festa .42s ease-in-out 6 alternate}
-.festa #turma .caramelo{animation-delay:.1s}.festa #turma .macarrao{animation-delay:.2s}
-.pausado #turma *{animation-play-state:paused}
-@keyframes pulinho{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-@keyframes trote{to{transform:translateY(-2px)}}
-@keyframes passo{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}
-@keyframes abanar{from{transform:rotate(-16deg)}to{transform:rotate(18deg)}}
-@keyframes chute{from{transform:rotate(-14deg)}to{transform:rotate(26deg)}}
-@keyframes festa{to{transform:translateY(-14px)}}
+#turma{position:absolute;left:0;bottom:calc(100% - 3px);width:178px;height:74px;pointer-events:none;transition:left .2s}
+#turmaCanvas{display:block;width:178px;height:74px}
 dialog{border:0;border-radius:20px;padding:16px 18px;width:min(660px,94vw);max-height:92dvh;color:var(--texto);background:var(--branco);font:15px/1.4 var(--corpo)}
 dialog[open]{display:flex;flex-direction:column;gap:10px}
 dialog::backdrop{background:rgba(15,61,43,.55)}
@@ -142,7 +122,7 @@ dialog h2{font:400 24px/1.2 var(--titulo);margin:0;color:var(--folha-escura)}
 @media (max-width:1240px){.borboleta,.trabalhando .borboleta{display:none}}
 @media (prefers-reduced-motion:reduce){
   #barFill,#turma{transition:none}
-  .trabalhando #turma *,.festa #turma .bicho,.trabalhando .macarrao,.trabalhando .gira,.trabalhando .jardim.esq,.trabalhando .jardim.dir,.trabalhando #barFill,.trabalhando #barFill::after,.borboleta,.asa{animation:none}
+  .trabalhando .gira,.trabalhando .jardim.esq,.trabalhando .jardim.dir,.trabalhando #barFill,.trabalhando #barFill::after,.borboleta,.asa{animation:none}
   .trabalhando .borboleta{display:none}
 }
 </style>
@@ -184,7 +164,7 @@ dialog h2{font:400 24px/1.2 var(--titulo);margin:0;color:var(--folha-escura)}
 
   <section class="panel" aria-live="polite">
     <div class="status"><div id="statusText">Pronto para começar</div><div id="percent">0%</div></div>
-    <div class="bar"><div id="turma"><svg class="bicho macarrao" viewBox="0 0 40 40" aria-hidden="true"><g class="corpo"><ellipse cx="25" cy="8" rx="2.8" ry="8" fill="#d9b48a" transform="rotate(-10 25 8)"/><ellipse cx="31" cy="9" rx="2.8" ry="8" fill="#d9b48a" transform="rotate(14 31 9)"/><ellipse cx="25" cy="8" rx="1.2" ry="5.5" fill="#f4b6c6" transform="rotate(-10 25 8)"/><ellipse cx="31" cy="9" rx="1.2" ry="5.5" fill="#f4b6c6" transform="rotate(14 31 9)"/><circle cx="6.5" cy="27" r="3.8" fill="#fff" stroke="#d9b48a"/><ellipse cx="17" cy="28" rx="12" ry="9" fill="#d9b48a"/><circle cx="29" cy="20" r="7.5" fill="#d9b48a"/><circle cx="31.5" cy="18.5" r="1.3" fill="#123a2a"/><circle cx="36" cy="21" r="1.2" fill="#ec4c86"/><ellipse cx="11" cy="36" rx="5" ry="2.4" fill="#c79d71"/><ellipse cx="24" cy="36" rx="4" ry="2.2" fill="#c79d71"/></g></svg><svg class="bicho caramelo" viewBox="0 0 62 44" aria-hidden="true"><path class="rabo" d="M13 21C7 19 5 13 7 8" fill="none" stroke="#22232a" stroke-width="4.5" stroke-linecap="round"/><g class="pata a"><rect x="15" y="29" width="6" height="11" rx="2.5" fill="#22232a"/><rect x="14.5" y="36" width="7.5" height="6" rx="3" fill="#a5612d"/></g><g class="pata b"><rect x="23" y="29" width="6" height="11" rx="2.5" fill="#22232a"/><rect x="22.5" y="36" width="7.5" height="6" rx="3" fill="#a5612d"/></g><g class="pata b"><rect x="37" y="29" width="6" height="11" rx="2.5" fill="#22232a"/><rect x="36.5" y="36" width="7.5" height="6" rx="3" fill="#a5612d"/></g><g class="pata a"><rect x="44" y="29" width="6" height="11" rx="2.5" fill="#22232a"/><rect x="43.5" y="36" width="7.5" height="6" rx="3" fill="#a5612d"/></g><rect x="10" y="16" width="41" height="17" rx="8.5" fill="#22232a"/><circle cx="49" cy="13" r="10.5" fill="#22232a"/><ellipse cx="56" cy="17" rx="5.6" ry="4.2" fill="#3a3b45"/><circle cx="60" cy="15.5" r="1.8" fill="#000"/><path d="M42 5c-5 2-7 8-4 13 3-1 6-6 6-12z" fill="#3a3b45"/><circle cx="52" cy="10" r="2.1" fill="#fff"/><circle cx="52.6" cy="10" r="1.1" fill="#000"/><path d="M55 21c0 4 1.5 5.5 3 5s1.6-3 1-5z" fill="#ec4c86"/></svg><svg class="bicho ale" viewBox="0 0 66 62" aria-hidden="true"><g class="patinete"><path d="M47 52 53 15" stroke="#17714a" stroke-width="3.2" stroke-linecap="round"/><path d="M48 14h11" stroke="#ec4c86" stroke-width="3.6" stroke-linecap="round"/><rect x="11" y="50" width="39" height="4.4" rx="2.2" fill="#17714a"/><circle cx="14" cy="57" r="4.4" fill="#2f9be0"/><circle cx="47" cy="57" r="4.4" fill="#2f9be0"/><circle cx="14" cy="57" r="1.5" fill="#fff"/><circle cx="47" cy="57" r="1.5" fill="#fff"/></g><g class="menina"><path class="perna-chuta" d="M24 37 13 48" stroke="var(--ale-pele)" stroke-width="4.2" stroke-linecap="round"/><path d="M31 37v12" stroke="var(--ale-pele)" stroke-width="4.2" stroke-linecap="round"/><rect x="27" y="47.5" width="9" height="3.6" rx="1.8" fill="#ec4c86"/><path d="M26 21h11l6 19H20z" fill="#ec4c86"/><path d="M33 25 50 16" stroke="var(--ale-pele)" stroke-width="3.8" stroke-linecap="round"/><circle cx="24" cy="10" r="4.8" fill="var(--ale-cabelo)"/><circle cx="19.5" cy="14" r="3.7" fill="var(--ale-cabelo)"/><circle cx="33" cy="12" r="9.6" fill="var(--ale-pele)"/><path d="M23.5 13C22 2 41 -1 43 9c-5-3-13-3-19 4z" fill="var(--ale-cabelo)"/><circle cx="26" cy="5.5" r="2.4" fill="#ffc21f"/><circle cx="37.5" cy="12" r="1.3" fill="#123a2a"/><path d="M34 16.5c2 1.5 4 1.2 5.2-.3" fill="none" stroke="#123a2a" stroke-width="1.3" stroke-linecap="round"/><circle cx="31.5" cy="15.5" r="1.9" fill="#ffb3c6"/></g></svg></div><div id="barFill"></div></div>
+    <div class="bar"><div id="turma"><canvas id="turmaCanvas" width="178" height="74" aria-hidden="true"></canvas></div><div id="barFill"></div></div>
     <div id="detail"></div>
     <div class="stats">
       <div class="stat"><b id="sTotal">0</b><span>arquivos no backup</span></div>
@@ -778,6 +758,119 @@ function chuvaDePetalas(){
     document.body.append(p);
   }
 }
+
+/* ---------- Alê, Caramelo e Macarrão: mesmos desenhos do clipe "Foi Deus quem escreveu" ---------- */
+(function(){
+  const cv = $('turmaCanvas'), ctx = cv.getContext('2d'), dpr = window.devicePixelRatio || 1;
+  const WT = 178, HT = 74, base = HT - 4, fh = 116;
+  cv.width = WT * dpr; cv.height = HT * dpr;
+  var T_NOW = 0, GREEN_INK = '#2f6b4a', SKIN_A = '#c68b63';
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+  function lerp(a,b,k){ return a + (b-a)*k; }
+  function thick(pts, w, col, ol, olw){
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.strokeStyle = ol; ctx.lineWidth = w + olw*2; ctx.stroke(); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke();
+  }
+  function face(hx, hy, hr, f, ol, ph, closed, sing){
+    var t = T_NOW, blink = ((t + ph*1.3) % 4.2) < .12 ? .15 : 1, ex = f*hr*.18;
+    if(closed){ ctx.strokeStyle = '#2a1a12'; ctx.lineWidth = Math.max(1, hr*.09); ctx.lineCap = 'round'; [-.33, .33].forEach(function(e){ ctx.beginPath(); ctx.arc(hx + ex + e*hr, hy - hr*.1, hr*.12, .15*Math.PI, .85*Math.PI); ctx.stroke(); }); }
+    else { ctx.fillStyle = '#2a1a12'; [-.33, .33].forEach(function(e){ ctx.beginPath(); ctx.ellipse(hx + ex + e*hr, hy - hr*.05, hr*.085, hr*.11*blink, 0, 0, 6.3); ctx.fill(); }); }
+    ctx.fillStyle = 'rgba(205,85,85,.28)'; ctx.beginPath(); ctx.arc(hx + ex - hr*.5, hy + hr*.25, hr*.16, 0, 6.3); ctx.arc(hx + ex + hr*.5, hy + hr*.25, hr*.16, 0, 6.3); ctx.fill();
+    if(sing){ ctx.fillStyle = '#5a1a1a'; ctx.beginPath(); ctx.ellipse(hx + ex, hy + hr*.38, hr*.17, hr*(.07 + .13*Math.abs(Math.sin(t*7 + ph*2))), 0, 0, 6.3); ctx.fill(); }
+    else { ctx.strokeStyle = '#4a2418'; ctx.lineWidth = Math.max(1, hr*.08); ctx.beginPath(); ctx.arc(hx + ex, hy + hr*.18, hr*.26, .25*Math.PI, .75*Math.PI); ctx.stroke(); }
+  }
+  function child(x, y, h, t, run, dir, jumping){
+    var hr = h*.18, hy = y - h*.8, sw = Math.sin(t*12)*run, bob = Math.sin(t*12)*h*.03*run, lw = Math.max(1, h*.02), OL = '#6a2a3c', sk = SKIN_A;
+    ctx.save(); ctx.fillStyle = 'rgba(40,30,20,.2)'; ctx.beginPath(); ctx.ellipse(x, y + 1, h*.22, h*.04, 0, 0, 6.3); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.translate(x, 0); ctx.scale(dir, 1); ctx.translate(-x, 0); ctx.lineCap = 'round';
+    var pig = Math.sin(t*12 + 1)*h*.04*(run + (jumping ? 1 : 0)); ctx.fillStyle = '#24160f'; ctx.strokeStyle = OL; ctx.lineWidth = lw;
+    ctx.beginPath(); ctx.ellipse(x - hr*1.3, hy + bob + hr*.1 + pig, hr*.38, hr*.5, .3, 0, 6.3); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.ellipse(x + hr*1.3, hy + bob + hr*.1 - pig, hr*.38, hr*.5, -.3, 0, 6.3); ctx.fill(); ctx.stroke();
+    [[-1, sw],[1, -sw]].forEach(function(L2){ thick([[x + L2[0]*h*.05, y - h*.28],[x + L2[0]*h*.07 + L2[1]*h*.14, y - h*.03]], h*.05, sk, OL, lw*.8); ctx.fillStyle = '#c4476a'; ctx.beginPath(); ctx.ellipse(x + L2[0]*h*.07 + L2[1]*h*.14 + h*.02, y - h*.015, h*.05, h*.03, 0, 0, 6.3); ctx.fill(); });
+    ctx.beginPath(); ctx.moveTo(x - h*.08, y - h*.64); ctx.lineTo(x + h*.08, y - h*.64); ctx.lineTo(x + h*.21, y - h*.26); ctx.quadraticCurveTo(x, y - h*.2, x - h*.21, y - h*.26); ctx.closePath(); ctx.fillStyle = '#f07fa0'; ctx.fill(); ctx.strokeStyle = OL; ctx.lineWidth = lw; ctx.stroke();
+    ctx.fillStyle = '#fff'; for(var d=0; d<4; d++){ ctx.beginPath(); ctx.arc(x - h*.1 + d*h*.07, y - h*.36 - (d % 2)*h*.08, h*.015, 0, 6.3); ctx.fill(); }
+    var up = jumping ? 1 : 0;
+    [[-1, sw*h*.06], [1, -sw*h*.06]].forEach(function(A2){ var hd = [x + A2[0]*h*.16, y - h*.58 + (up ? -h*.2 : h*.14 + A2[1])]; thick([[x + A2[0]*h*.07, y - h*.6], hd], h*.045, sk, OL, lw*.8); });
+    ctx.fillStyle = sk; ctx.strokeStyle = OL; ctx.lineWidth = lw; ctx.beginPath(); ctx.arc(x, hy + bob, hr, 0, 6.3); ctx.fill(); ctx.stroke();
+    face(x, hy + bob, hr, 1, '#3a2a1c', 2);
+    ctx.fillStyle = '#24160f'; ctx.beginPath(); ctx.arc(x, hy + bob, hr*1.06, Math.PI, Math.PI*2); ctx.quadraticCurveTo(x + hr*.3, hy + bob - hr*.45, x - hr*.2, hy + bob - hr*.5); ctx.quadraticCurveTo(x - hr*.7, hy + bob - hr*.35, x - hr*1.06, hy + bob); ctx.fill();
+    ctx.fillStyle = '#f07fa0'; ctx.beginPath(); ctx.arc(x - hr*1.0, hy + bob - hr*.35, hr*.18, 0, 6.3); ctx.arc(x + hr*1.0, hy + bob - hr*.35, hr*.18, 0, 6.3); ctx.fill();
+    ctx.restore();
+  }
+  function bunny(x, y, s, t, run, dir, sit, ph){
+    var hopH = (sit || run <= 0) ? ((Math.sin(t*1.9 + ph) > .93) ? Math.abs(Math.sin(t*14))*s*.18 : 0) : Math.abs(Math.sin(t*7.5 + ph))*s*.55*run;
+    var air = clamp(hopH/(s*.55), 0, 1), st = 1 + air*.12;
+    ctx.save(); ctx.fillStyle = 'rgba(40,30,20,.2)'; ctx.beginPath(); ctx.ellipse(x - s*.06*dir, y + 1, s*.42*(1 - air*.3), s*.07, 0, 0, 6.3); ctx.fill();
+    ctx.translate(x, y - hopH); ctx.scale(dir, 1);
+    var fur = '#c9a272', dark = '#a67f4f', belly = '#ecd6b0', pink = '#e8a0ac', OLN = 'rgba(80,55,30,.5)';
+    ctx.lineWidth = 1; ctx.strokeStyle = OLN;
+    ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.arc(-s*.46, -s*.34, s*.13, 0, 6.3); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = dark; ctx.beginPath(); ctx.ellipse(-s*.12, -s*.07, s*.26*st, s*.09, -.05, 0, 6.3); ctx.fill();
+    var gb = ctx.createLinearGradient(0, -s*.66, 0, 0); gb.addColorStop(0, fur); gb.addColorStop(1, dark); ctx.fillStyle = gb; ctx.beginPath(); ctx.ellipse(-s*.05, -s*.34, s*.44*st, s*.3, -.1, 0, 6.3); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = belly; ctx.beginPath(); ctx.ellipse(s*.12, -s*.22, s*.2, s*.15, 0, 0, 6.3); ctx.fill();
+    ctx.fillStyle = belly; ctx.beginPath(); ctx.ellipse(s*.3, -s*.05, s*.1, s*.06, 0, 0, 6.3); ctx.fill(); ctx.stroke();
+    var hx = s*.4, hy = -s*.62 - air*s*.04;
+    [[hx - s*.1, -.32 - air*.5],[hx + s*.04, -.08 - air*.4]].forEach(function(E, k){ ctx.save(); ctx.translate(E[0], hy - s*.2); ctx.rotate(E[1] + Math.sin(t*3 + ph + k)*.04);
+      ctx.fillStyle = k ? fur : dark; ctx.beginPath(); ctx.ellipse(0, -s*.3, s*.09, s*.34, 0, 0, 6.3); ctx.fill(); ctx.stroke(); ctx.fillStyle = pink; ctx.beginPath(); ctx.ellipse(0, -s*.28, s*.045, s*.24, 0, 0, 6.3); ctx.fill(); ctx.restore(); });
+    ctx.fillStyle = fur; ctx.beginPath(); ctx.arc(hx, hy, s*.27, 0, 6.3); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = belly; ctx.beginPath(); ctx.ellipse(hx + s*.14, hy + s*.08, s*.15, s*.12, 0, 0, 6.3); ctx.fill();
+    ctx.fillStyle = 'rgba(232,130,140,.35)'; ctx.beginPath(); ctx.arc(hx + s*.02, hy + s*.1, s*.06, 0, 6.3); ctx.fill();
+    ctx.fillStyle = '#2a1a12'; ctx.beginPath(); ctx.arc(hx + s*.12, hy - s*.04, s*.045, 0, 6.3); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(hx + s*.135, hy - s*.06, s*.015, 0, 6.3); ctx.fill();
+    var nw = 1 + Math.sin(t*12 + ph)*.15; ctx.fillStyle = pink; ctx.beginPath(); ctx.ellipse(hx + s*.27, hy + s*.04, s*.04*nw, s*.03*nw, 0, 0, 6.3); ctx.fill();
+    ctx.strokeStyle = 'rgba(80,55,30,.55)'; ctx.lineWidth = .8; ctx.beginPath(); ctx.moveTo(hx + s*.2, hy + s*.06); ctx.lineTo(hx + s*.42, hy + s*.02); ctx.moveTo(hx + s*.2, hy + s*.09); ctx.lineTo(hx + s*.4, hy + s*.12); ctx.stroke();
+    ctx.restore();
+  }
+  function dog(x, y, s, t, run, dir, sit, hop){
+    // o cachorro de vocês: preto, com as patas marrons
+    ctx.save(); ctx.translate(x, y - hop); ctx.fillStyle = 'rgba(40,30,20,.22)'; ctx.beginPath(); ctx.ellipse(0, hop + 1, s*.62*dir*dir, s*.07, 0, 0, 6.3); ctx.fill(); ctx.scale(dir, 1);
+    var col = '#1e1a18', dark = '#0e0c0b', paw = '#8a5a2b', leg = Math.sin(t*16)*run, wag = Math.sin(t*(sit ? 10 : 18))*.6, lw2 = Math.max(2.4, s*.1);
+    ctx.lineCap = 'round';
+    // rabo
+    ctx.strokeStyle = col; ctx.lineWidth = lw2; ctx.save(); ctx.translate(-s*.55, sit ? -s*.25 : -s*.55); ctx.rotate(-.8 + wag); ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(-s*.2, -s*.15, -s*.32, -s*.32); ctx.stroke(); ctx.restore();
+    // pernas pretas com as patas marrons
+    function legLine(x1, y1, x2, y2){ var mx = lerp(x1, x2, .55), my = lerp(y1, y2, .55);
+      ctx.strokeStyle = col; ctx.lineWidth = lw2; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(mx, my); ctx.stroke();
+      ctx.strokeStyle = paw; ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(x2, y2); ctx.stroke();
+      ctx.fillStyle = paw; ctx.beginPath(); ctx.ellipse(x2 + s*.03, y2, s*.06, s*.035, 0, 0, 6.3); ctx.fill(); }
+    if(sit){ legLine(s*.25, -s*.35, s*.28, 0); legLine(s*.38, -s*.35, s*.42, 0); ctx.fillStyle = paw; ctx.beginPath(); ctx.ellipse(-s*.3, -s*.02, s*.1, s*.04, 0, 0, 6.3); ctx.fill(); }
+    else { [[-.38, 1],[-.22, -1],[.25, -1],[.4, 1]].forEach(function(l){ legLine(s*l[0], -s*.4, s*l[0] + l[1]*leg*s*.14, 0); }); }
+    // corpo
+    ctx.fillStyle = col; ctx.beginPath();
+    if(sit){ ctx.ellipse(-s*.08, -s*.38, s*.42, s*.32, -.6, 0, 6.3); } else { ctx.ellipse(0, -s*.52, s*.55, s*.24, 0, 0, 6.3); }
+    ctx.fill();
+    // cabeça, focinho, orelha caída
+    var hx = sit ? s*.32 : s*.55, hy = sit ? -s*.82 : -s*.78;
+    ctx.beginPath(); ctx.arc(hx, hy, s*.24, 0, 6.3); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(hx + s*.24, hy + s*.06, s*.13, s*.1, 0, 0, 6.3); ctx.fill();
+    ctx.save(); ctx.translate(hx - s*.16, hy - s*.2); ctx.rotate(.55 + Math.sin(t*14)*.22*run); ctx.beginPath(); ctx.moveTo(-s*.06, 0); ctx.quadraticCurveTo(s*.15, -s*.05, s*.13, s*.13); ctx.quadraticCurveTo(s*.1, s*.36, -s*.03, s*.37); ctx.quadraticCurveTo(-s*.15, s*.26, -s*.06, 0); ctx.closePath();
+    ctx.fillStyle = '#2c2523'; ctx.fill(); ctx.strokeStyle = '#8f7d73'; ctx.lineWidth = Math.max(1, s*.03); ctx.stroke(); ctx.restore();
+    // olho com brilho (para aparecer no pelo preto) e nariz
+    ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.arc(hx + s*.08, hy - s*.06, s*.055, 0, 6.3); ctx.fill();
+    ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(hx + s*.095, hy - s*.06, s*.032, 0, 6.3); ctx.fill();
+    ctx.fillStyle = '#4a3b33'; ctx.beginPath(); ctx.arc(hx + s*.36, hy + s*.03, s*.045, 0, 6.3); ctx.fill();
+    if(run > .2 || sit){ ctx.fillStyle = '#e0607e'; ctx.beginPath(); ctx.ellipse(hx + s*.26, hy + s*.17 + Math.abs(leg)*s*.03, s*.04, s*.07, 0, 0, 6.3); ctx.fill(); }
+    // coleira verde
+    ctx.strokeStyle = GREEN_INK; ctx.lineWidth = Math.max(2, s*.07); ctx.beginPath(); ctx.arc(hx, hy, s*.25, 1.9, 2.9); ctx.stroke();
+    ctx.restore();
+  }
+  function pinta(t){
+    const cl = document.body.classList, festa = cl.contains('festa'), run = cl.contains('trabalhando') ? 1 : 0;
+    T_NOW = t;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, WT, HT);
+    bunny(26, base, fh*.17, t, festa ? .8 : run, 1, false, 2.1);
+    dog(82, base, fh*.22, t, festa ? .6 : run, 1, false, festa ? Math.abs(Math.sin(t*5 + 1))*fh*.08 : 0);
+    child(150, base - (festa ? Math.abs(Math.sin(t*5))*fh*.08 : 0), fh*.5, t, run, 1, festa && Math.sin(t*5) > 0);
+  }
+  const calmo = matchMedia('(prefers-reduced-motion: reduce)');
+  let t = 0, antes = performance.now();
+  pinta(0);
+  requestAnimationFrame(function quadro(agora){
+    const dt = Math.min((agora - antes) / 1000, .1); antes = agora;
+    if (!calmo.matches && !document.body.classList.contains('pausado')) { t += dt; pinta(t); }
+    requestAnimationFrame(quadro);
+  });
+})();
 
 /* ---------- Botões ---------- */
 $('btnLogin').onclick = async () => {
