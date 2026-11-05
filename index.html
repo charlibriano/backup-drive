@@ -94,6 +94,7 @@ dialog h2{font:400 24px/1.2 var(--titulo);margin:0;color:var(--folha-escura)}
 .item .nome{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pasta .nome{font-weight:600}
 .item .tam{margin-left:auto;padding:0 8px;flex:none;font-size:13px;color:var(--suave)}
+.carregando{padding:10px;color:var(--suave)}
 #escResumo{margin:0;font-size:14px;color:var(--suave)}
 .acoes{display:flex;justify-content:flex-end;gap:8px}
 .gira{transform-box:fill-box;transform-origin:center}
@@ -324,6 +325,23 @@ function pickNode(node, on, set){
 }
 const nodeState = (node, set) => isChosen(node.path, set) ? 'on' : [...set].some(p => p.startsWith(node.path + '/')) ? 'mixed' : 'off';
 const fmtCount = (n, size) => `${n.toLocaleString('pt-BR')} ${n === 1 ? 'arquivo' : 'arquivos'}` + (size ? `, ${fmtBytes(size)}` : '');
+function abrirEscolha(saved){
+  const dlg = $('escolha'), carregando = document.createElement('li');
+  (saved?.mode === 'some' ? $('modoEscolher') : $('modoTudo')).checked = true;
+  $('modoTudo').onchange = $('modoEscolher').onchange = () => { $('escArvore').hidden = $('modoTudo').checked; };
+  $('escArvore').hidden = $('modoTudo').checked;
+  carregando.className = 'carregando'; carregando.textContent = 'Lendo as pastas do Drive…';
+  $('arvore').replaceChildren(carregando);
+  $('escTudo').textContent = 'Todas as pastas e arquivos';
+  $('escResumo').textContent = 'Lendo a lista do Drive…';
+  $('escOk').disabled = true;
+  $('escOk').textContent = $('modoTudo').checked ? 'Copiar tudo' : 'Copiar selecionados';
+  const desistir = () => { S.stop = true; S.controller?.abort(); dlg.close(); };
+  $('escCancel').onclick = desistir;
+  dlg.oncancel = e => { e.preventDefault(); desistir(); };
+  document.body.classList.add('pausado');
+  dlg.showModal();
+}
 function chooseSelection(tasks, saved){
   const { root, index } = buildTree(tasks);
   const set = new Set((saved?.paths || []).filter(p => index.has(p)));
@@ -367,7 +385,6 @@ function chooseSelection(tasks, saved){
   }
   list.replaceChildren(...sortKids(root).map(row));
   $('escTudo').textContent = fmtCount(root.count, root.size);
-  (saved?.mode === 'some' ? $('modoEscolher') : $('modoTudo')).checked = true;
   $('modoTudo').onchange = $('modoEscolher').onchange = refresh;
   refresh();
   return new Promise(resolve => {
@@ -375,7 +392,7 @@ function chooseSelection(tasks, saved){
     $('escOk').onclick = () => done($('modoTudo').checked ? { mode:'all', paths:[...set] } : { mode:'some', paths:[...set] });
     $('escCancel').onclick = () => done(null);
     dlg.oncancel = e => { e.preventDefault(); done(null); };
-    dlg.showModal();
+    if (!dlg.open) dlg.showModal();
   });
 }
 
@@ -473,6 +490,7 @@ function checkStop(){ if (S.stop) throw new StopRun(); }
 function waitForRenew(){
   if (!S.gate) {
     S.gate = new Promise(r => { S.gateOpen = r; });
+    if ($('escolha').open) $('escolha').close();
     document.title = 'Renove o acesso · Backup Drive';
     document.body.classList.add('pausado');
     setStatus('Pausado: o acesso ao Google expirou');
@@ -531,6 +549,7 @@ async function listAllFiles(signal){
     const j = await (await gfetch(u.href, signal)).json();
     items.push(...(j.files || [])); pageToken = j.nextPageToken || '';
     setStatus(`Lendo a lista do Drive: ${items.length.toLocaleString('pt-BR')} itens…`);
+    $('escResumo').textContent = $('statusText').textContent;
   } while (pageToken);
   return items;
 }
@@ -663,6 +682,7 @@ async function runBackup(){
     if (S.manifest.account && S.manifest.account !== S.email) throw new Fatal(`Esta pasta é o backup de ${S.manifest.account}. Escolha outra pasta para ${S.email}.`);
     S.manifest.account = S.email;
     const root = await (await gfetch(`${API}/files/root?fields=id`, signal)).json();
+    abrirEscolha(S.manifest.selection);
     const items = await listAllFiles(signal);
     const plan = buildPlan(items, root.id);
     setStatus('Escolha o que copiar');
@@ -715,7 +735,7 @@ async function runBackup(){
     finish(S.fails.length ? `Concluído, com ${S.fails.length.toLocaleString('pt-BR')} arquivo(s) com problema` : (S.copied ? 'Backup concluído' : 'Tudo em dia: nada novo para copiar'), true);
   } catch (e) {
     S.dirty = true; try { await saveManifest(); } catch {}
-    if (e instanceof StopRun || S.stop) finish('Backup parado. Iniciar de novo continua de onde parou.', false);
+    if (e instanceof StopRun || S.stop) finish(S.queue ? 'Backup parado. Iniciar de novo continua de onde parou.' : 'Pronto para começar', false);
     else {
       finish('Backup interrompido', false);
       showAlert(e instanceof Fatal ? e.message : 'Erro inesperado: ' + friendlyError(e));
